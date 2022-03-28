@@ -5,10 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.mapping.CollectionResourceMapping;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 
 @Data
 @NoArgsConstructor
@@ -51,4 +49,3 @@ public class Transaction {
 @RepositoryRestResource
 interface TransactionRepository extends JpaRepository<Transaction, Long> {
 }
-
