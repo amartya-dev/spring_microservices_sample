@@ -10,6 +10,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.NoSuchPaddingException;
+import java.io.FileNotFoundException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -62,7 +66,15 @@ class TransactionController {
 
 	@PostMapping("/create-transaction")
 	@CrossOrigin
-	public Transaction postTransaction(@RequestBody Transaction transaction) {
+	public Transaction postTransaction(@RequestBody Transaction transaction) throws FileNotFoundException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+		// Encrypt the transactions
+		String accountFrom = transaction.getAccountFrom();
+		String accountNumber = transaction.getAccountNumber();
+		Encryption encryption = new Encryption();
+
+		transaction.setAccountFrom(encryption.encrypt(accountFrom));
+		transaction.setAccountNumber(encryption.encrypt(accountNumber));
+		System.out.printf("Data being sent it Account From %s\n Account Number %s\n", transaction.getAccountFrom(), transaction.getAccountNumber());
 		return transactionClient.writeTransaction(transaction);
 	}
 }
